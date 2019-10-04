@@ -1,11 +1,10 @@
-import wpilib
-import wpilib.command as wpilib
+from wpilib.command import Command
 import ctre
 import math
 from chassis import Chassis
 from oi import OI
 
-class TeleopDriveCommand(wpilib.Command):
+class TeleopDriveCommand(Command):
 
     def __init__(self):
         self.requires(Chassis.getInstance())

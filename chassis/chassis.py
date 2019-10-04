@@ -11,6 +11,7 @@ class Chassis(wpilib.Subsystem):
     CIRCUMFERENCE = DIAMETER * math.pi
     TICKS_TO_ROTATIONS = 1 / (4096) # 4096 ticks in mag encoders
     ROTATIONS_TO_FEET = TICKS_TO_ROTATIONS * CIRCUMFERENCE
+    FEET_PER_SECOND = ROTATIONS_TO_FEET * 10
 
     __instances = None
 
@@ -45,9 +46,14 @@ class Chassis(wpilib.Subsystem):
         self.__setLeftRightPower((forward + rotational), (forward - rotational))
 
     def getVelocity(self):
-        leftVelocity = self.leftMaster.getSelectedSensorVelocity() * ROTATIONS_TO_FEET
-        rightVelocity = self.rightMaster.getSelectedSensorVelocity() * ROTATIONS_TO_FEET
+        leftVelocity = self.leftMaster.getSelectedSensorVelocity() * self.FEET_PER_SECOND
+        rightVelocity = self.rightMaster.getSelectedSensorVelocity() * self.FEET_PER_SECOND
         return (leftVelocity + rightVelocity) / 2
+
+    def getPosition(self):
+        leftPosition = self.leftMaster.getSelectedSensorPosition() * self.ROTATIONS_TO_FEET
+        rightPosition = self.rightMaster.getSelectedSensorPosition() * self.ROTATIONS_TO_FEET
+        return (leftPosition + rightPosition) / 2
 
     def periodic(self):
         SmartDashboard.putNumber("Velocity", self.getVelocity())
