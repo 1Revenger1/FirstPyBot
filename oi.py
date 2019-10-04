@@ -1,6 +1,8 @@
 from wpilib import XboxController
+from wpilib.buttons import JoystickButton
 from wpilib.interfaces import GenericHID
 import math
+from chassis.driveStraightCommand import DriveStraightCommand
 
 class OI():
 
@@ -11,6 +13,10 @@ class OI():
     def __init__(self):
         self.driverController = XboxController(0)
         self.manipulatorController = XboxController(1)
+
+        self.aButtonDriver = JoystickButton(self.driverController, 0)
+
+        self.aButtonDriver.whenPressed(DriveStraightCommand(10))
 
     @staticmethod
     def getInstance() -> OI:
